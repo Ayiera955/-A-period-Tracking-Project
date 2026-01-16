@@ -1,0 +1,1 @@
+This is a Period Cycle Tracking system which is coded only by javascrript and can be able to be view in the Command line  since it uses its features such as console.log an updated version will be posted soon as i try to make it for the web.
