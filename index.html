@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Period Tracker - Your Menstrual Health Companion</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="login-screen active">
+      <div class="login-container">
+        <div class="login-logo">🌸</div>
+        <h1>PeriodTracker</h1>
+        <p class="login-subtitle">Your Personal Menstrual Health Companion</p>
+
+        <!-- Login Form -->
+        <form id="login-form" class="login-form">
+          <div class="form-group">
+            <label for="login-username">Username or Email</label>
+            <input
+              type="text"
+              id="login-username"
+              placeholder="Enter your username or email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <label class="checkbox-label remember-me">
+            <input type="checkbox" id="remember-me" />
+            <span class="checkbox-custom"></span>
+            Remember me
+          </label>
+
+          <button type="submit" class="btn-primary btn-login">Sign In</button>
+        </form>
+
+        <!-- Toggle to Register -->
+        <div class="login-toggle">
+          <p>
+            Don't have an account?
+            <button type="button" id="toggle-register-btn" class="toggle-link">
+              Sign Up
+            </button>
+          </p>
+        </div>
+
+        <!-- Register Form (Hidden by default) -->
+        <form id="register-form" class="login-form hidden">
+          <div class="form-group">
+            <label for="register-name">Full Name</label>
+            <input
+              type="text"
+              id="register-name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input
+              type="email"
+              id="register-email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input
+              type="text"
+              id="register-username"
+              placeholder="Choose a username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input
+              type="password"
+              id="register-password"
+              placeholder="Create a password (min. 6 characters)"
+              required
+              minlength="6"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input
+              type="password"
+              id="register-confirm"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn-primary btn-login">
+            Create Account
+          </button>
+        </form>
+
+        <!-- Toggle to Login -->
+        <div class="register-toggle hidden">
+          <p>
+            Already have an account?
+            <button type="button" id="toggle-login-btn" class="toggle-link">
+              Sign In
+            </button>
+          </p>
+        </div>
+
+        <div class="login-footer">
+          <p class="demo-note">
+            💡 Demo: Use username: "demo" and password: "demo123" to test
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div id="app-container" class="container hidden">
+      <!-- SIDEBAR NAVIGATION -->
+      <aside class="sidebar">
+        <div class="logo-section">
+          <div class="logo">🌸</div>
+          <h1>PeriodTracker</h1>
+        </div>
+
+        <nav class="nav-menu">
+          <button class="nav-btn active" data-section="dashboard">
+            <span class="nav-icon">📊</span>
+            Dashboard
+          </button>
+          <button class="nav-btn" data-section="log-period">
+            <span class="nav-icon">📝</span>
+            Log Period
+          </button>
+          <button class="nav-btn" data-section="log-symptoms">
+            <span class="nav-icon">💭</span>
+            Log Symptoms
+          </button>
+          <button class="nav-btn" data-section="predictions">
+            <span class="nav-icon">🔮</span>
+            Predictions
+          </button>
+          <button class="nav-btn" data-section="insights">
+            <span class="nav-icon">💡</span>
+            Insights
+          </button>
+          <button class="nav-btn" data-section="history">
+            <span class="nav-icon">📅</span>
+            History
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="btn-settings"><span>⚙️</span> Settings</button>
+          <button class="btn-logout"><span>🚪</span> Logout</button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT AREA -->
+      <main class="main-content">
+        <!-- HEADER -->
+        <header class="header">
+          <div class="header-left">
+            <h2 id="section-title">Dashboard</h2>
+          </div>
+          <div class="header-right">
+            <div class="user-info">
+              <span class="user-greeting"
+                >Welcome, <strong id="user-name">User</strong>!</span
+              >
+            </div>
+            <button class="btn-notification">🔔</button>
+            <button class="btn-profile">👤</button>
+          </div>
+        </header>
+
+        <!-- CONTENT SECTIONS -->
+        <div class="content-wrapper">
+          <!-- DASHBOARD SECTION -->
+          <section id="dashboard" class="section active">
+            <div class="dashboard-grid">
+              <!-- Current Cycle Card -->
+              <div class="cycle-card">
+                <h3>Current Cycle</h3>
+                <div class="cycle-days">
+                  <span class="day-count" id="cycle-day">-</span>
+                  <span class="day-label">Day of Cycle</span>
+                </div>
+                <div class="cycle-info">
+                  <p id="cycle-phase">Not tracked</p>
+                  <p id="next-period-estimate">Next period: Not calculated</p>
+                </div>
+              </div>
+
+              <!-- Recent Stats Card -->
+              <div class="stats-card">
+                <h3>Recent Stats</h3>
+                <div class="stats-list">
+                  <div class="stat-item">
+                    <span class="stat-label">Average Cycle</span>
+                    <span class="stat-value" id="avg-cycle">28 days</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Last Period</span>
+                    <span class="stat-value" id="last-period">No data</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-label">Periods Logged</span>
+                    <span class="stat-value" id="periods-count">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Symptoms Today Card -->
+              <div class="symptoms-card">
+                <h3>Today's Mood</h3>
+                <div class="mood-display">
+                  <div id="mood-emoji" class="mood-emoji">😐</div>
+                  <p id="mood-text">No mood logged today</p>
+                </div>
+                <button
+                  class="btn-primary btn-small"
+                  onclick="switchSection('log-symptoms')"
+                >
+                  Log Symptoms
+                </button>
+              </div>
+
+              <!-- Quick Actions Card -->
+              <div class="actions-card">
+                <h3>Quick Actions</h3>
+                <div class="quick-actions">
+                  <button
+                    class="quick-action-btn"
+                    onclick="switchSection('log-period')"
+                  >
+                    📍 Start Period
+                  </button>
+                  <button
+                    class="quick-action-btn"
+                    onclick="switchSection('log-symptoms')"
+                  >
+                    📝 Log Symptoms
+                  </button>
+                  <button
+                    class="quick-action-btn"
+                    onclick="switchSection('predictions')"
+                  >
+                    🔮 Predictions
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Calendar View -->
+            <div class="calendar-section">
+              <div class="calendar-header">
+                <h3>Cycle Calendar</h3>
+                <div class="calendar-controls">
+                  <button id="prev-month" class="btn-nav">←</button>
+                  <span id="calendar-month">January 2026</span>
+                  <button id="next-month" class="btn-nav">→</button>
+                </div>
+              </div>
+              <div id="calendar-view" class="calendar-grid">
+                <!-- Calendar generated by JavaScript -->
+              </div>
+            </div>
+          </section>
+
+          <!-- LOG PERIOD SECTION -->
+          <section id="log-period" class="section">
+            <div class="form-container">
+              <h3>Log Period Start</h3>
+              <form id="period-form" class="form">
+                <div class="form-group">
+                  <label for="period-start-date"
+                    >When did your period start?</label
+                  >
+                  <input type="date" id="period-start-date" required />
+                </div>
+
+                <div class="form-group">
+                  <label>Flow Intensity</label>
+                  <div class="radio-group">
+                    <label class="radio-label">
+                      <input type="radio" name="flow-intensity" value="light" />
+                      <span class="radio-custom"></span>
+                      Light
+                    </label>
+                    <label class="radio-label">
+                      <input
+                        type="radio"
+                        name="flow-intensity"
+                        value="moderate"
+                        checked
+                      />
+                      <span class="radio-custom"></span>
+                      Moderate
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="flow-intensity" value="heavy" />
+                      <span class="radio-custom"></span>
+                      Heavy
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="period-cramping" />
+                    <span class="checkbox-custom"></span>
+                    I have cramps
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <label for="period-notes">Notes (optional)</label>
+                  <textarea
+                    id="period-notes"
+                    placeholder="Add any additional notes..."
+                  ></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary btn-large">
+                  Log Period
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <!-- LOG SYMPTOMS SECTION -->
+          <section id="log-symptoms" class="section">
+            <div class="form-container">
+              <h3>Log Your Symptoms</h3>
+              <form id="symptoms-form" class="form">
+                <div class="form-group">
+                  <label>Today's Date</label>
+                  <input type="date" id="symptom-date" disabled />
+                </div>
+
+                <div class="form-group">
+                  <label>How are you feeling?</label>
+                  <div class="mood-selector">
+                    <button
+                      type="button"
+                      class="mood-btn"
+                      data-mood="1"
+                      data-emoji="😢"
+                    >
+                      😢<br />Terrible
+                    </button>
+                    <button
+                      type="button"
+                      class="mood-btn"
+                      data-mood="2"
+                      data-emoji="😞"
+                    >
+                      😞<br />Bad
+                    </button>
+                    <button
+                      type="button"
+                      class="mood-btn"
+                      data-mood="3"
+                      data-emoji="😐"
+                    >
+                      😐<br />Okay
+                    </button>
+                    <button
+                      type="button"
+                      class="mood-btn"
+                      data-mood="4"
+                      data-emoji="🙂"
+                    >
+                      🙂<br />Good
+                    </button>
+                    <button
+                      type="button"
+                      class="mood-btn"
+                      data-mood="5"
+                      data-emoji="😄"
+                    >
+                      😄<br />Great
+                    </button>
+                  </div>
+                  <input type="hidden" id="mood-rating" value="3" />
+                </div>
+
+                <div class="form-group">
+                  <label>Energy Level</label>
+                  <div class="slider-container">
+                    <input
+                      type="range"
+                      id="energy-level"
+                      min="1"
+                      max="10"
+                      value="5"
+                      class="slider"
+                    />
+                    <div class="slider-labels">
+                      <span>Low</span>
+                      <span id="energy-value">5</span>
+                      <span>High</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Select Symptoms</label>
+                  <div class="symptoms-grid">
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="cramps" />
+                      <span>Cramps</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="headache" />
+                      <span>Headache</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="fatigue" />
+                      <span>Fatigue</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input
+                        type="checkbox"
+                        name="symptoms"
+                        value="mood-swings"
+                      />
+                      <span>Mood Swings</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="bloating" />
+                      <span>Bloating</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="acne" />
+                      <span>Acne</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input
+                        type="checkbox"
+                        name="symptoms"
+                        value="back-pain"
+                      />
+                      <span>Back Pain</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="nausea" />
+                      <span>Nausea</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input
+                        type="checkbox"
+                        name="symptoms"
+                        value="breast-tenderness"
+                      />
+                      <span>Breast Tenderness</span>
+                    </label>
+                    <label class="symptom-tag">
+                      <input type="checkbox" name="symptoms" value="anxiety" />
+                      <span>Anxiety</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-large">
+                  Save Symptoms
+                </button>
+              </form>
+            </div>
+          </section>
+
+          <!-- PREDICTIONS SECTION -->
+          <section id="predictions" class="section">
+            <div class="predictions-container">
+              <h3>Cycle Predictions</h3>
+              <div id="predictions-content" class="predictions-content">
+                <p class="empty-state">
+                  Log your period and symptoms to receive personalized
+                  predictions
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- INSIGHTS SECTION -->
+          <section id="insights" class="section">
+            <div class="insights-container">
+              <h3>Personalized Insights</h3>
+              <form id="insights-form" class="form" style="margin-bottom: 2rem">
+                <div class="form-group">
+                  <label for="feeling-input"
+                    >How are you feeling right now?</label
+                  >
+                  <textarea
+                    id="feeling-input"
+                    placeholder="Describe your current state, emotions, or any concerns..."
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-large">
+                  Get Insights
+                </button>
+              </form>
+              <div id="insights-content" class="insights-content">
+                <p class="empty-state">
+                  Share how you're feeling to receive personalized insights
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- HISTORY SECTION -->
+          <section id="history" class="section">
+            <div class="history-container">
+              <h3>Tracking History</h3>
+
+              <div class="history-tabs">
+                <button class="history-tab active" data-tab="periods">
+                  Periods
+                </button>
+                <button class="history-tab" data-tab="symptoms">
+                  Symptoms
+                </button>
+              </div>
+
+              <div class="history-tab-content">
+                <div id="periods-tab" class="tab-content active">
+                  <div id="periods-history" class="history-list">
+                    <p class="empty-state">No periods logged yet</p>
+                  </div>
+                </div>
+
+                <div id="symptoms-tab" class="tab-content">
+                  <div id="symptoms-history" class="history-list">
+                    <p class="empty-state">No symptoms logged yet</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Settings</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="api-key"
+              >OpenAI API Key (optional for AI features)</label
+            >
+            <input type="password" id="api-key" placeholder="sk-..." />
+          </div>
+          <div class="form-group">
+            <label for="cycle-length">Average Cycle Length</label>
+            <input
+              type="number"
+              id="cycle-length"
+              min="21"
+              max="35"
+              value="28"
+            />
+          </div>
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="notifications-enabled" checked />
+              <span class="checkbox-custom"></span>
+              Enable notifications
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" onclick="closeModal('settings-modal')">
+            Cancel
+          </button>
+          <button class="btn-primary" onclick="saveSettings()">
+            Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
